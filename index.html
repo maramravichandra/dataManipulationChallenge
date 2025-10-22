@@ -357,7 +357,7 @@ First few rows of product line data:
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Data Types and Date Handling</strong> - What is the <code>dtype</code> of the <code>actualShipDate</code> series? How can you find out using code?</p>
-<div id="469c7eb8" class="cell" data-execution_count="3">
+<div id="5679b31a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(shipments_with_lateness[<span class="st">'actualShipDate'</span>].dtype)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#or we can also show like this</span></span>
@@ -367,10 +367,10 @@ First few rows of product line data:
 datetime64[ns]</code></pre>
 </div>
 </div>
-<p>Every series created from pandas/numpy will have a property callyed ‘dtype’, which will give you the data type of the series. - Why is it important that both <code>actualShipDate</code> and <code>plannedShipDate</code> have the same data type for comparison?</p>
-<div id="2b8ccac6" class="cell" data-execution_count="4">
+<p>Every series created from pandas/numpy will have a property called ‘dtype’, which will give you the data type of the series. - Why is it important that both <code>actualShipDate</code> and <code>plannedShipDate</code> have the same data type for comparison?</p>
+<div id="9c4d17aa" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness[[<span class="st">'actualShipDate'</span>,<span class="st">'plannedShipDate'</span>]].dtypes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>actualShipDate     datetime64[ns]
 plannedShipDate    datetime64[ns]
 dtype: object</code></pre>
@@ -378,7 +378,7 @@ dtype: object</code></pre>
 </div>
 <p>If you see the above results both data types are same and we can use them for comparision</p>
 <p><strong>Question 2: String vs Date Comparison</strong> - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g.&nbsp;what happens if you try to compare “04-11-2025” and “05-20-2024” as strings vs as dates?</p>
-<div id="3e971cbf" class="cell" data-execution_count="5">
+<div id="1840cced" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame with string dates</span></span>
@@ -433,7 +433,7 @@ Result is True, which is logically correct.</code></pre>
 <blockquote class="blockquote">
 
 </blockquote>
-<div id="e6bb445a" class="cell" data-execution_count="6">
+<div id="f373e304" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>shipments_without_lateness <span class="op">=</span> (</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    shipments_df</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
@@ -451,7 +451,7 @@ Result is True, which is logically correct.</code></pre>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
 
@@ -596,7 +596,7 @@ Late shipments sample:
 <li><p><strong><code>df[df['is_late'] == True]</code> (Boolean Indexing)</strong>: This is the fundamental way to filter in pandas. It works by generating a boolean Series (<code>True</code>/<code>False</code> for each row) and then using that Series to select rows from the original DataFrame. While powerful, the syntax can become less readable with multiple conditions due to nested brackets and parentheses.</p></li>
 </ol>
 <p><strong>Conclusion</strong>: <code>.query()</code> is generally considered more readable for simple to moderately complex filtering.</p>
-<div id="f61bc2e5" class="cell" data-execution_count="8">
+<div id="e980a80d" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Both methods return the same filtered DataFrame.</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Using .query() ---"</span>)</span>
@@ -707,10 +707,10 @@ Late shipments sample:
 <p><strong>Question 2: Additional Row Querying</strong> - Can you show an example of using a variable like <code>late_threshold</code> to query rows for shipments that are at least <code>late_threshold</code> days late, e.g.&nbsp;what if you wanted to query rows for shipments that are at least 5 days late?</p>
 </div>
 </div>
-<div id="36d15019" class="cell" data-execution_count="9">
+<div id="77103d38" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>late_threshold <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness.query(<span class="ss">f'days_late &gt;= </span><span class="sc">{</span>late_threshold<span class="sc">}</span><span class="ss">'</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
 
@@ -832,7 +832,7 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 <li><p><strong><code>.drop(columns=['quantity'])</code></strong>: This method just drops the list of columns given to the method.</p></li>
 <li><p><strong><code>filter()</code></strong>: This is like select required columns by passing list of columns.</p></li>
 </ol>
-<p><strong>Conclusion</strong>: I would use those methods based on the requirement,. lets say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.</p>
+<p><strong>Conclusion</strong>: I would use those methods based on the requirement. Let’s say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.</p>
 <p><strong>Question 2: Handling Missing Data</strong> - What happens if you use <code>.dropna()</code> without specifying <code>subset</code>? How is this different from <code>.dropna(subset=['plannedShipDate', 'actualShipDate'])</code>? - Why might you want to be selective about which columns to check for missing values?</p>
 </div>
 </div>
@@ -844,7 +844,7 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 <li><strong><code>.dropna(subset=['plannedShipDate', 'actualShipDate'])</code></strong>: This method just drops the rows if any of the specified columns has a missing value.</li>
 </ol>
 </blockquote>
-<p>Lets say when you are working with dataset and want to use few columns as feature columns for your model, if you use dropna without subset it drops many rows even your feature columns are not not having missing values and other columns has missing values. In this case you are loosing data. So dropna(subset=[]) will be more causious way of dropping columns</p>
+<p>Let’s say when you are working with a dataset and want to use a few columns as feature columns for your model. If you use dropna without a subset, it drops many rows even if your feature columns do not have missing values but other columns do. In this case, you are losing data. So dropna(subset=[]) will be a more cautious way of dropping rows.</p>
 </section>
 </section>
 <section id="sort-arranging-data" class="level3">

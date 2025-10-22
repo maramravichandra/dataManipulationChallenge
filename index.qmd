@@ -716,6 +716,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+
 ## Challenge Requirements 📋
 
 **Your Primary Task:** Answer all discussion questions for the seven mental models with thoughtful, well-reasoned responses that demonstrate your understanding of data manipulation concepts.
