@@ -204,7 +204,7 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
     #or we can also show like this
     print(shipments_with_lateness['actualShipDate'].dtypes)
 ```
-Every series created from pandas/numpy will have a property callyed 'dtype', which will give you the data type of the series.
+Every series created from pandas/numpy will have a property called 'dtype', which will give you the data type of the series.
 - Why is it important that both `actualShipDate` and `plannedShipDate` have the same data type for comparison?
 
 ```{python}
@@ -393,7 +393,7 @@ Both methods achieve the same goal of selecting or dropping columns, but they do
 
 2.  **`filter()`**: This is like select required columns by passing list of columns.
 
-**Conclusion**: I would use those methods based on the requirement,. lets say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.
+**Conclusion**: I would use those methods based on the requirement. Let's say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.
 
 
 **Question 2: Handling Missing Data**
@@ -407,7 +407,7 @@ Both methods achieve the same goal of selecting or dropping columns, but they do
 > 1.  **`.dropna()`**: This method just drops all rows if any row has a missing value in any of the columns.
     2.  **`.dropna(subset=['plannedShipDate', 'actualShipDate'])`**: This method just drops the rows if any of the specified columns has a missing value.
 
-Lets say when you are working with dataset and want to use few columns as feature columns for your model, if you use dropna without subset it drops many rows even your feature columns are not not having missing values and other columns has missing values. In this case you are loosing data. So dropna(subset=[]) will be more causious way of dropping columns
+Let's say when you are working with a dataset and want to use a few columns as feature columns for your model. If you use dropna without a subset, it drops many rows even if your feature columns do not have missing values but other columns do. In this case, you are losing data. So dropna(subset=[]) will be a more cautious way of dropping rows.
 
 ### 4. Sort: Arranging Data
 
