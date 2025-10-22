@@ -196,10 +196,55 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
 
 **Question 1: Data Types and Date Handling**
 - What is the `dtype` of the `actualShipDate` series? How can you find out using code?
+
+```{python}
+
+    print(shipments_with_lateness['actualShipDate'].dtype)
+
+    #or we can also show like this
+    print(shipments_with_lateness['actualShipDate'].dtypes)
+```
+Every series created from pandas/numpy will have a property callyed 'dtype', which will give you the data type of the series.
 - Why is it important that both `actualShipDate` and `plannedShipDate` have the same data type for comparison?
+
+```{python}
+shipments_with_lateness[['actualShipDate','plannedShipDate']].dtypes
+
+```
+
+If you see the above results both data types are same and we can use them for comparision
 
 **Question 2: String vs Date Comparison**
 - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g. what happens if you try to compare "04-11-2025" and "05-20-2024" as strings vs as dates?
+
+```{python}
+import pandas as pd
+
+# Create a DataFrame with string dates
+date_df = pd.DataFrame({
+    'date1': ["04-11-2025"],
+    'date2': ["05-20-2024"]
+})
+
+# 1. Compare as strings (lexicographical comparison)
+date_df['string_comparison'] = date_df['date1'] > date_df['date2']
+print("--- Comparing as Strings ---")
+print(date_df)
+print("Result is False because '0' (from '04-...') is less than '5' (from '05-...').\n")
+
+# 2. Convert to datetime objects and compare
+date_df['date_1'] = pd.to_datetime(date_df['date1'], format='%m-%d-%Y')
+date_df['date_2'] = pd.to_datetime(date_df['date2'], format='%m-%d-%Y')
+
+date_df['date_comparison'] = date_df['date_1'] > date_df['date_2']
+
+print("--- Comparing as Datetime Objects ---")
+print(date_df[['date_1', 'date_2', 'date_comparison']])
+print("Result is True, which is logically correct.")
+```
+
+:::
+
 
 **Question 3: Debug This Code**
 ```python
@@ -214,11 +259,35 @@ shipments_with_lateness = (
 )
 ```
 What's wrong with the `lateStatement` assignment and how would you fix it?
+
 :::
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+>
+```{python}
+shipments_without_lateness = (
+    shipments_df
+    .assign(
+        is_late=lambda df: df['actualShipDate'] > df['plannedShipDate'],
+        days_late=lambda df: (df['actualShipDate'] - df['plannedShipDate']).dt.days
+    )
+)
+
+shipments_with_lateness = (
+    shipments_without_lateness
+    .assign(
+        lateStatement=lambda df: np.where(df['is_late'], "Darn Shipment is Late", "Shipment is on Time")
+
+    )
+)
+
+shipments_with_lateness.head(5)
+```
+
+ The given code is wrong because the column 'is_late' did not exists in the 'shipments_df' so can't use in the assign method so we get 'KeyError: 'is_late''
+
+To fix this we need to use 'is_late' column after creating the column. Below code should fix the error.
 
 ### 2. Subset: Querying Rows and Filtering Columns
 
@@ -255,15 +324,40 @@ print(late_shipments.head())
 
 **Question 1: Query vs Boolean Indexing**
 - What's the difference between using `.query('is_late == True')` and `[df['is_late'] == True]`?
-- Which approach is more readable and why?
+- Which approach is more readable and why? 
+
+Both methods achieve the same goal of filtering rows, but they do so with different syntax.
+
+1.  **`.query('is_late == True')`**: This method evaluates a **string expression**. It's often more readable because the syntax is clean and resembles natural language (or a SQL `WHERE` clause). It's especially useful inside a method chain.
+
+2.  **`df[df['is_late'] == True]` (Boolean Indexing)**: This is the fundamental way to filter in pandas. It works by generating a boolean Series (`True`/`False` for each row) and then using that Series to select rows from the original DataFrame. While powerful, the syntax can become less readable with multiple conditions due to nested brackets and parentheses.
+
+**Conclusion**: `.query()` is generally considered more readable for simple to moderately complex filtering.
+
+```{python}
+# Both methods return the same filtered DataFrame.
+
+print("--- Using .query() ---")
+display(shipments_with_lateness.query('is_late == True').head(2))
+
+print("\n--- Using Boolean Indexing ---")
+display(shipments_with_lateness[shipments_with_lateness['is_late'] == True].head(2))
+```
+
 
 **Question 2: Additional Row Querying**
 - Can you show an example of using a variable like `late_threshold` to query rows for shipments that are at least `late_threshold` days late, e.g. what if you wanted to query rows for shipments that are at least 5 days late?
 :::
 
+```{python}
+late_threshold = 5
+shipments_with_lateness.query(f'days_late >= {late_threshold}').head()
+
+```
+
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> If we just filter days_late column with 5 like 'days_late > 5' It will give us the required results. Please check the above output. It is showing the data which is shipment is late by >= 5 days.
 
 ### 3. Drop: Removing Unwanted Data
 
@@ -293,6 +387,15 @@ print("Remaining columns:", clean_shipments.columns.tolist())
 - What's the difference between `.drop(columns=['quantity'])` and `.filter()` with a list of columns you want to keep?
 - When would you choose to drop columns vs filter to keep specific columns?
 
+Both methods achieve the same goal of selecting or dropping columns, but they do so with different syntax.
+
+1.  **`.drop(columns=['quantity'])`**: This method just drops the list of columns given to the method.
+
+2.  **`filter()`**: This is like select required columns by passing list of columns.
+
+**Conclusion**: I would use those methods based on the requirement,. lets say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.
+
+
 **Question 2: Handling Missing Data**
 - What happens if you use `.dropna()` without specifying `subset`? How is this different from `.dropna(subset=['plannedShipDate', 'actualShipDate'])`?
 - Why might you want to be selective about which columns to check for missing values?
@@ -301,7 +404,10 @@ print("Remaining columns:", clean_shipments.columns.tolist())
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> 1.  **`.dropna()`**: This method just drops all rows if any row has a missing value in any of the columns.
+    2.  **`.dropna(subset=['plannedShipDate', 'actualShipDate'])`**: This method just drops the rows if any of the specified columns has a missing value.
+
+Lets say when you are working with dataset and want to use few columns as feature columns for your model, if you use dropna without subset it drops many rows even your feature columns are not not having missing values and other columns has missing values. In this case you are loosing data. So dropna(subset=[]) will be more causious way of dropping columns
 
 ### 4. Sort: Arranging Data
 
@@ -339,7 +445,13 @@ print(sorted_by_lateness[['shipID', 'partID', 'days_late', 'is_late']].head(10))
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> **Question 1: Sorting Strategies**
+> - **`ascending=False`** sorts data in descending order (largest to smallest), which is useful for finding top values like the "most late" shipments. **`ascending=True`** is the default and sorts in ascending order (smallest to largest).
+> - To sort by multiple columns, you pass a list of column names, e.g., `.sort_values(by=['is_late', 'days_late'])`. You can also pass a list of booleans to `ascending` to specify the order for each column, like `ascending=[False, False]`. This would sort by `is_late` first (descending), and for all rows with the same `is_late` value, it would then sort them by `days_late` (descending).
+>
+> **Question 2: Index Management**
+> - When you sort, each row keeps its original index. This results in a jumbled, non-sequential index (e.g., the new index might be `[345, 12, 1098, ...]`). This can be problematic because the index no longer represents the row's position, which can cause confusion or errors in subsequent operations that rely on a clean index.
+> - We use **`.reset_index(drop=True)`** to fix this. It discards the old, jumbled index and replaces it with a new, clean, sequential integer index (0, 1, 2, ...). The `drop=True` part prevents pandas from adding the old index as a new column, which is typically desired as the old index values are no longer meaningful.
 
 ### 5. Aggregate: Summarizing Data
 
@@ -379,7 +491,10 @@ print(f"\nOn-time delivery rate: {on_time_rate:.1f}%")
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> **Question 1: Boolean Aggregation**
+> - In pandas (and its underlying library, NumPy), boolean values are treated as integers during arithmetic operations: `True` is treated as `1` and `False` is treated as `0`.
+> - When you call `.sum()` on a boolean column like `is_late`, it adds up all the ones and zeros. The result is the total count of `True` values. Therefore, `clean_shipments['is_late'].sum()` effectively counts the total number of late shipments.
+> - This is a powerful feature. Similarly, calling `.mean()` on a boolean column calculates the proportion of `True` values, which in this case is the late shipment rate.
 
 ### 6. Merge: Combining Information
 
@@ -418,7 +533,13 @@ print(shipments_with_category['prodCategory'].value_counts())
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> **Question 1: Join Types and Data Loss**
+> - We use `how='left'` to ensure we keep all records from our primary (left) DataFrame, which is `clean_shipments`. This prevents us from losing shipment data just because a corresponding `partID` might not exist in the `product_line_df`. An `inner` join would drop these unmatched shipments, leading to data loss and skewed analysis.
+> - To check for unmatched shipments after a left merge, you can filter for rows where a column from the right table is null, e.g., `shipments_with_category[shipments_with_category['prodCategory'].isna()]`. This tells you which `partID`s from the shipments data did not find a match.
+>
+> **Question 2: Key Column Matching**
+> - If there are duplicate `partID` values in the `product_line_df` (the right table), the merge will create a Cartesian product for those duplicates. This means a single row from `clean_shipments` will be duplicated for every matching `partID` in `product_line_df`.
+> - For example, if one shipment row for `partID` '123' is being merged and `product_line_df` has two rows for `partID` '123', the result will be two rows in the final DataFrame. This can unintentionally inflate row counts and lead to incorrect summary statistics, so it's crucial to ensure the key column in the right-side table is unique.
 
 ### 7. Split-Apply-Combine: Group Analysis
 
@@ -458,7 +579,13 @@ print(service_by_category)
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> **Question 1: GroupBy Mechanics**
+> - **`.groupby('prodCategory')`** is the "Split" step. It doesn't change the data visually but creates a `DataFrameGroupBy` object. Internally, it groups the rows into "buckets" based on each unique value in the `prodCategory` column.
+> - We need to use **`.agg()`** (or another aggregation function like `.sum()` or `.mean()`) for the "Apply" and "Combine" steps. This tells pandas what calculation to perform on each group. Without an aggregation function, the `groupby` object is just an intermediate representation of the grouped data, not a final, summarized result.
+>
+> **Question 2: Multi-Level Grouping**
+> - Grouping by **`'prodCategory'`** alone summarizes performance across all shipments for each category (e.g., "What is the overall late rate for Electronics?").
+> - Grouping by **`['shipID', 'prodCategory']`** is more granular. It first groups by each individual shipment and *then* by the categories within that shipment. This is crucial for answering questions about the composition of a single order. For example, it allows us to count how many different product categories are present within a single `shipID`, which is exactly what's needed to determine if an order is a multi-category order.
 
 ## Answering A Business Question
 
@@ -502,7 +629,13 @@ print(f"Percentage with multiple categories: {multi_category_shipments['shipID']
 
 #### Briefly Give Answers to the Discussion Questions In This Section
 
-> Replace this with your answers to the discussion questions
+> **Question 1: Business Question Analysis**
+> - **Business Question:** The analysis answers, "What percentage of our shipments contain products from more than one product category?"
+> - **Grouping Difference:** Grouping by `['shipID', 'prodCategory']` is essential because it creates a summary for each category *within* a single shipment. This allows the subsequent `.transform('nunique')` step to count the number of distinct categories for each `shipID`. Grouping by `'prodCategory'` alone would lose the individual shipment context.
+> - **Management Insights:**
+>   - **Marketing:** This metric helps evaluate the success of cross-selling strategies. A high percentage means customers are buying across categories; a low percentage suggests an opportunity to improve product discovery or bundling.
+>   - **Logistics:** Multi-category orders can be more complex to fulfill. Knowing their frequency helps optimize warehouse operations and manage fulfillment costs.
+>   - **Customer Behavior:** It provides insight into whether customers are "mission-driven" (buying one type of item) or "browsers" (exploring multiple categories), which can inform website design and user experience.
 
 ## Student Analysis Section: Mastering Data Manipulation {#student-analysis-section}
 
@@ -535,11 +668,53 @@ print(f"Percentage with multiple categories: {multi_category_shipments['shipID']
 **Create visualizations showing:**
 - Service level (on-time percentage) by product category
 
+
 **Your visualizations should:**
 - Use clear labels and professional formatting
 - Support the insights from your discussion questions
 - Be appropriate for a business audience
 - Do not `echo` the code that creates the visualizations
+
+```{python}
+#| label: professional-visualization
+#| echo: false
+#| fig-cap: "On-Time Shipment Percentage by Product Category"
+#| fig-align: center
+
+# 1. Prepare data for plotting
+# The 'mean' of 'is_late' is the late rate. On-time rate is 1 - late_rate.
+plot_data = (
+    service_by_category
+    .assign(on_time_pct=lambda df: (1 - df[('is_late', 'mean')]) * 100)
+    .reset_index()
+    .sort_values('on_time_pct', ascending=False)
+)
+
+# 2. Creating the plot
+plt.style.use('seaborn-v0_8-whitegrid')
+fig, ax = plt.subplots(figsize=(12, 8))
+
+bars = ax.barh(plot_data['prodCategory'], plot_data['on_time_pct'], color=sns.color_palette("viridis", len(plot_data)))
+
+# 3. Adding labels and professional formatting
+ax.set_title('On-Time Shipment Performance by Product Category', fontsize=18, fontweight='bold', pad=20)
+ax.set_xlabel('On-Time Percentage (%)', fontsize=12, labelpad=10)
+ax.set_ylabel('Product Category', fontsize=12, labelpad=10)
+ax.tick_params(axis='x', labelsize=11)
+ax.tick_params(axis='y', labelsize=11)
+ax.set_xlim(0, 100) # Set x-axis to a percentage scale
+
+# Remove top and right spines for a cleaner look
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+
+# 4. Add data labels to each bar
+for bar in bars:
+    ax.text(bar.get_width() + 1, bar.get_y() + bar.get_height()/2, f'{bar.get_width():.1f}%', va='center', ha='left', fontsize=10)
+
+plt.tight_layout()
+plt.show()
+```
 
 ## Challenge Requirements 📋
 
@@ -656,5 +831,3 @@ print(f"Percentage with multiple categories: {multi_category_shipments['shipID']
 
 - [ ] Professional writing style (no AI-generated fluff)
 - [ ] Concise analysis that gets to the point
-
-
