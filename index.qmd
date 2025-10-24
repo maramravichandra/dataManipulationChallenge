@@ -195,7 +195,8 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
 ## 🤔 Discussion Questions: Assign Mental Model
 
 **Question 1: Data Types and Date Handling**
-- What is the `dtype` of the `actualShipDate` series? How can you find out using code?
+
+**What is the `dtype` of the `actualShipDate` series? How can you find out using code?**
 
 ```{python}
 
@@ -205,14 +206,15 @@ print(shipments_with_lateness[['shipID', 'plannedShipDate', 'actualShipDate', 'i
     print(shipments_with_lateness['actualShipDate'].dtypes)
 ```
 Every series created from pandas/numpy will have a property called 'dtype', which will give you the data type of the series.
-- Why is it important that both `actualShipDate` and `plannedShipDate` have the same data type for comparison?
+ 
+**Why is it important that both `actualShipDate` and `plannedShipDate` have the same data type for comparison?**
 
 ```{python}
 shipments_with_lateness[['actualShipDate','plannedShipDate']].dtypes
 
 ```
 
-If you see the above results both data types are same and we can use them for comparision
+If you see the above results both data types are same and we can use them for comparision. If we compapare different values with different data types It can't be compared occuratly. In the below question I have explained clearly with python code. Please check.
 
 **Question 2: String vs Date Comparison**
 - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g. what happens if you try to compare "04-11-2025" and "05-20-2024" as strings vs as dates?
