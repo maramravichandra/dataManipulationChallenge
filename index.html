@@ -357,7 +357,7 @@ First few rows of product line data:
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Data Types and Date Handling</strong> - What is the <code>dtype</code> of the <code>actualShipDate</code> series? How can you find out using code?</p>
-<div id="5679b31a" class="cell" data-execution_count="3">
+<div id="b5afbabd" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(shipments_with_lateness[<span class="st">'actualShipDate'</span>].dtype)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#or we can also show like this</span></span>
@@ -368,9 +368,9 @@ datetime64[ns]</code></pre>
 </div>
 </div>
 <p>Every series created from pandas/numpy will have a property called ‘dtype’, which will give you the data type of the series. - Why is it important that both <code>actualShipDate</code> and <code>plannedShipDate</code> have the same data type for comparison?</p>
-<div id="9c4d17aa" class="cell" data-execution_count="4">
+<div id="11db49dc" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness[[<span class="st">'actualShipDate'</span>,<span class="st">'plannedShipDate'</span>]].dtypes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="228">
 <pre><code>actualShipDate     datetime64[ns]
 plannedShipDate    datetime64[ns]
 dtype: object</code></pre>
@@ -378,7 +378,7 @@ dtype: object</code></pre>
 </div>
 <p>If you see the above results both data types are same and we can use them for comparision</p>
 <p><strong>Question 2: String vs Date Comparison</strong> - Can you give an example where comparing two dates as strings would yield unintuitive results, e.g.&nbsp;what happens if you try to compare “04-11-2025” and “05-20-2024” as strings vs as dates?</p>
-<div id="1840cced" class="cell" data-execution_count="5">
+<div id="8e764a6b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame with string dates</span></span>
@@ -387,11 +387,11 @@ dtype: object</code></pre>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'date2'</span>: [<span class="st">"05-20-2024"</span>]</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Compare as strings (lexicographical comparison)</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Compare as strings</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>date_df[<span class="st">'string_comparison'</span>] <span class="op">=</span> date_df[<span class="st">'date1'</span>] <span class="op">&gt;</span> date_df[<span class="st">'date2'</span>]</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Comparing as Strings ---"</span>)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(date_df)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Result is False because '0' (from '04-...') is less than '5' (from '05-...').</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Result is False because '4' (from '04-...') is less than '5' (from '05-...').</span><span class="ch">\n</span><span class="st">"</span>)</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Convert to datetime objects and compare</span></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>date_df[<span class="st">'date_1'</span>] <span class="op">=</span> pd.to_datetime(date_df[<span class="st">'date1'</span>], <span class="bu">format</span><span class="op">=</span><span class="st">'%m-</span><span class="sc">%d</span><span class="st">-%Y'</span>)</span>
@@ -406,14 +406,12 @@ dtype: object</code></pre>
 <pre><code>--- Comparing as Strings ---
         date1       date2  string_comparison
 0  04-11-2025  05-20-2024              False
-Result is False because '0' (from '04-...') is less than '5' (from '05-...').
+Result is False because '4' (from '04-...') is less than '5' (from '05-...').
 
 --- Comparing as Datetime Objects ---
       date_1     date_2  date_comparison
 0 2025-04-11 2024-05-20             True
 Result is True, which is logically correct.</code></pre>
-</div>
-</div>
 </div>
 </div>
 <p><strong>Question 3: Debug This Code</strong></p>
@@ -427,13 +425,13 @@ Result is True, which is logically correct.</code></pre>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>What’s wrong with the <code>lateStatement</code> assignment and how would you fix it?</p>
-<p>:::</p>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
-
+<p>The given code is wrong because the column ‘is_late’ did not exists in the ‘shipments_df’ so can’t use in the assign method so we get ‘KeyError: ’is_late’’.</p>
 </blockquote>
-<div id="f373e304" class="cell" data-execution_count="6">
+<p>To fix this we need to use ‘is_late’ column after creating the column. Below code should fix the error.</p>
+<div id="306a90e6" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>shipments_without_lateness <span class="op">=</span> (</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    shipments_df</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
@@ -445,13 +443,14 @@ Result is True, which is logically correct.</code></pre>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness <span class="op">=</span> (</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    shipments_without_lateness</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    .assign(</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        lateStatement<span class="op">=</span><span class="kw">lambda</span> df: np.where(df[<span class="st">'is_late'</span>], <span class="st">"Darn Shipment is Late"</span>, <span class="st">"Shipment is on Time"</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        lateStatement<span class="op">=</span><span class="kw">lambda</span> df: np.where(df[<span class="st">'is_late'</span>], <span class="st">"Darn Shipment is Late"</span>, </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Shipment is on Time"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness.head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="230">
 <div>
 
 
@@ -531,9 +530,9 @@ Result is True, which is logically correct.</code></pre>
 </div>
 </div>
 </div>
-<p>The given code is wrong because the column ‘is_late’ did not exists in the ‘shipments_df’ so can’t use in the assign method so we get ‘KeyError: ’is_late’’</p>
-<p>To fix this we need to use ‘is_late’ column after creating the column. Below code should fix the error.</p>
 </section>
+</div>
+</div>
 </section>
 <section id="subset-querying-rows-and-filtering-columns" class="level3">
 <h3 class="anchored" data-anchor-id="subset-querying-rows-and-filtering-columns">2. Subset: Querying Rows and Filtering Columns</h3>
@@ -590,13 +589,13 @@ Late shipments sample:
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Query vs Boolean Indexing</strong> - What’s the difference between using <code>.query('is_late == True')</code> and <code>[df['is_late'] == True]</code>? - Which approach is more readable and why?</p>
-<p>Both methods achieve the same goal of filtering rows, but they do so with different syntax.</p>
+<p>Both methods are used to achieve the same goal of filtering rows, but they do so with different syntax.</p>
 <ol type="1">
 <li><p><strong><code>.query('is_late == True')</code></strong>: This method evaluates a <strong>string expression</strong>. It’s often more readable because the syntax is clean and resembles natural language (or a SQL <code>WHERE</code> clause). It’s especially useful inside a method chain.</p></li>
 <li><p><strong><code>df[df['is_late'] == True]</code> (Boolean Indexing)</strong>: This is the fundamental way to filter in pandas. It works by generating a boolean Series (<code>True</code>/<code>False</code> for each row) and then using that Series to select rows from the original DataFrame. While powerful, the syntax can become less readable with multiple conditions due to nested brackets and parentheses.</p></li>
 </ol>
-<p><strong>Conclusion</strong>: <code>.query()</code> is generally considered more readable for simple to moderately complex filtering.</p>
-<div id="e980a80d" class="cell" data-execution_count="8">
+<p><strong>Conclusion</strong>: <code>.query()</code> is generally considered more readable for simple to moderately complex filtering. Below code can explain how those methods can be used.</p>
+<div id="229ea17d" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Both methods return the same filtered DataFrame.</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- Using .query() ---"</span>)</span>
@@ -705,12 +704,10 @@ Late shipments sample:
 </div>
 </div>
 <p><strong>Question 2: Additional Row Querying</strong> - Can you show an example of using a variable like <code>late_threshold</code> to query rows for shipments that are at least <code>late_threshold</code> days late, e.g.&nbsp;what if you wanted to query rows for shipments that are at least 5 days late?</p>
-</div>
-</div>
-<div id="77103d38" class="cell" data-execution_count="9">
+<div id="d4c8e99b" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>late_threshold <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>shipments_with_lateness.query(<span class="ss">f'days_late &gt;= </span><span class="sc">{</span>late_threshold<span class="sc">}</span><span class="ss">'</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="233">
 <div>
 
 
@@ -790,12 +787,15 @@ Late shipments sample:
 </div>
 </div>
 </div>
+<p>If we just filter ‘days_late’ column like ‘days_late &gt; 5’ It will give us the required results. Please check the above output. It is showing the data which shipment is late by &gt;= 5 days</p>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-1" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-1">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
-<p>If we just filter days_late column with 5 like ‘days_late &gt; 5’ It will give us the required results. Please check the above output. It is showing the data which is shipment is late by &gt;= 5 days.</p>
+<p>In this section we have learned how to filter data. We also learnt different ways of filtering. As of this section we should know how to use ‘query()’ method and ‘loc[]’ method to filter the data.</p>
 </blockquote>
 </section>
+</div>
+</div>
 </section>
 <section id="drop-removing-unwanted-data" class="level3">
 <h3 class="anchored" data-anchor-id="drop-removing-unwanted-data">3. Drop: Removing Unwanted Data</h3>
@@ -830,22 +830,23 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 <p>Both methods achieve the same goal of selecting or dropping columns, but they do so with different syntax.</p>
 <ol type="1">
 <li><p><strong><code>.drop(columns=['quantity'])</code></strong>: This method just drops the list of columns given to the method.</p></li>
-<li><p><strong><code>filter()</code></strong>: This is like select required columns by passing list of columns.</p></li>
+<li><p><strong><code>filter()</code></strong>: This is like selecting required columns by passing list of column names.</p></li>
 </ol>
-<p><strong>Conclusion</strong>: I would use those methods based on the requirement. Let’s say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.</p>
+<p><strong>Conclusion</strong>: I would use any of those methods based on the requirement. Let’s say if I want to keep most of the columns in dataset then I would use drop method. If I want to use very few columns then I would use filter method.</p>
 <p><strong>Question 2: Handling Missing Data</strong> - What happens if you use <code>.dropna()</code> without specifying <code>subset</code>? How is this different from <code>.dropna(subset=['plannedShipDate', 'actualShipDate'])</code>? - Why might you want to be selective about which columns to check for missing values?</p>
-</div>
-</div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-2" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-2">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
 <ol type="1">
-<li><strong><code>.dropna()</code></strong>: This method just drops all rows if any row has a missing value in any of the columns.</li>
-<li><strong><code>.dropna(subset=['plannedShipDate', 'actualShipDate'])</code></strong>: This method just drops the rows if any of the specified columns has a missing value.</li>
+<li><strong><code>.dropna()</code></strong>: This method just drops any row if it contains a missing value in any of the columns.</li>
+<li><strong><code>.dropna(subset=['plannedShipDate', 'actualShipDate'])</code></strong>: This method just drops the rows contains missing value in the given columns.</li>
 </ol>
 </blockquote>
-<p>Let’s say when you are working with a dataset and want to use a few columns as feature columns for your model. If you use dropna without a subset, it drops many rows even if your feature columns do not have missing values but other columns do. In this case, you are losing data. So dropna(subset=[]) will be a more cautious way of dropping rows.</p>
+<p>Lets say you have a dataset which contains col1, col2, col3 and col4. In this case you want to use col1 and col2 as feature columns. If you use dropna without subset it just drops rows containing missing value in any of the columns.But you goal is to just drop rows contains missing value in col1 and col2. Since you are dropping many rows here your train data becomes less so you model won’t be efficient.</p>
+<p>So you should use dropna(subset=[]) as it will only drops rows which you don’t want missing values in given columns, not all. So dropna(subset=[listof columns]) is more causious way of dropping rows with missing value.</p>
 </section>
+</div>
+</div>
 </section>
 <section id="sort-arranging-data" class="level3">
 <h3 class="anchored" data-anchor-id="sort-arranging-data">4. Sort: Arranging Data</h3>
@@ -888,15 +889,15 @@ Remaining columns: ['shipID', 'plannedShipDate', 'actualShipDate', 'partID', 'is
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Sorting Strategies</strong> - What’s the difference between <code>ascending=False</code> and <code>ascending=True</code> in sorting? - How would you sort by multiple columns (e.g., first by <code>is_late</code>, then by <code>days_late</code>)?</p>
 <p><strong>Question 2: Index Management</strong> - Why do we use <code>.reset_index(drop=True)</code> after sorting? - What happens to the original index when you sort? Why might this be problematic?</p>
-</div>
-</div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-3" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-3">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
-<p><strong>Question 1: Sorting Strategies</strong> - <strong><code>ascending=False</code></strong> sorts data in descending order (largest to smallest), which is useful for finding top values like the “most late” shipments. <strong><code>ascending=True</code></strong> is the default and sorts in ascending order (smallest to largest). - To sort by multiple columns, you pass a list of column names, e.g., <code>.sort_values(by=['is_late', 'days_late'])</code>. You can also pass a list of booleans to <code>ascending</code> to specify the order for each column, like <code>ascending=[False, False]</code>. This would sort by <code>is_late</code> first (descending), and for all rows with the same <code>is_late</code> value, it would then sort them by <code>days_late</code> (descending).</p>
-<p><strong>Question 2: Index Management</strong> - When you sort, each row keeps its original index. This results in a jumbled, non-sequential index (e.g., the new index might be <code>[345, 12, 1098, ...]</code>). This can be problematic because the index no longer represents the row’s position, which can cause confusion or errors in subsequent operations that rely on a clean index. - We use <strong><code>.reset_index(drop=True)</code></strong> to fix this. It discards the old, jumbled index and replaces it with a new, clean, sequential integer index (0, 1, 2, …). The <code>drop=True</code> part prevents pandas from adding the old index as a new column, which is typically desired as the old index values are no longer meaningful.</p>
+<p><strong>Question 1: Sorting Strategies</strong> - <strong><code>ascending=False</code></strong> sorts data in descending order (largest to smallest), which is useful for finding top values like the “most late” shipments. <strong><code>ascending=True</code></strong> is the default and sorts in ascending order (smallest to largest). To sort by multiple columns, you pass a list of column names, e.g., <code>.sort_values(by=['is_late', 'days_late'])</code>. You can also pass a list of booleans to <code>ascending</code> to specify the order for each column, like <code>ascending=[False, False]</code>. This would sort by <code>is_late</code> first (descending), and for all rows with the same <code>is_late</code> value, it would then sort them by <code>days_late</code> (descending).</p>
+<p><strong>Question 2: Index Management</strong> - When you sort, each row keeps its original index. This results in a jumbled, non-sequential index (e.g., the new index might be <code>[345, 12, 1098, ...]</code>). This can be problematic because the index no longer represents the row’s position, which can cause confusion or errors in subsequent operations that rely on a clean index. We use <strong><code>.reset_index(drop=True)</code></strong> to fix this. It discards the old, jumbled index and replaces it with a new, clean, sequential integer index (0, 1, 2, …). The <code>drop=True</code> part prevents pandas from adding the old index as a new column, which is typically desired as the old index values are no longer meaningful.</p>
 </blockquote>
 </section>
+</div>
+</div>
 </section>
 <section id="aggregate-summarizing-data" class="level3">
 <h3 class="anchored" data-anchor-id="aggregate-summarizing-data">5. Aggregate: Summarizing Data</h3>
@@ -941,14 +942,15 @@ On-time delivery rate: 88.6%</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Boolean Aggregation</strong> - Why does <code>sum()</code> work on boolean values? What does it count?</p>
-</div>
-</div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-4" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-4">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
-<p><strong>Question 1: Boolean Aggregation</strong> - In pandas (and its underlying library, NumPy), boolean values are treated as integers during arithmetic operations: <code>True</code> is treated as <code>1</code> and <code>False</code> is treated as <code>0</code>. - When you call <code>.sum()</code> on a boolean column like <code>is_late</code>, it adds up all the ones and zeros. The result is the total count of <code>True</code> values. Therefore, <code>clean_shipments['is_late'].sum()</code> effectively counts the total number of late shipments. - This is a powerful feature. Similarly, calling <code>.mean()</code> on a boolean column calculates the proportion of <code>True</code> values, which in this case is the late shipment rate.</p>
+<p><strong>Question 1: Boolean Aggregation</strong> - In pandas (and its underlying library, NumPy), boolean values are treated as integers during arithmetic operations: <code>True</code> is treated as <code>1</code> and <code>False</code> is treated as <code>0</code>. When you call <code>.sum()</code> on a boolean column like <code>is_late</code>, it adds up all the ones and zeros. The result is the total count of <code>True</code> values. Therefore, <code>clean_shipments['is_late'].sum()</code> effectively counts the total number of late shipments.</p>
+<p>This is a powerful feature. Similarly, calling <code>.mean()</code> on a boolean column calculates the proportion of <code>True</code> values, which in this case is the late shipment rate.</p>
 </blockquote>
 </section>
+</div>
+</div>
 </section>
 <section id="merge-combining-information" class="level3">
 <h3 class="anchored" data-anchor-id="merge-combining-information">6. Merge: Combining Information</h3>
@@ -989,15 +991,16 @@ Name: count, dtype: int64</code></pre>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Join Types and Data Loss</strong> - Why does your professor think we should use <code>how='left'</code> in most cases? - How can you check if any shipments were lost during the merge?</p>
 <p><strong>Question 2: Key Column Matching</strong> - What happens if there are duplicate <code>partID</code> values in the <code>product_line_df</code>?</p>
-</div>
-</div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-5" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-5">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
 <p><strong>Question 1: Join Types and Data Loss</strong> - We use <code>how='left'</code> to ensure we keep all records from our primary (left) DataFrame, which is <code>clean_shipments</code>. This prevents us from losing shipment data just because a corresponding <code>partID</code> might not exist in the <code>product_line_df</code>. An <code>inner</code> join would drop these unmatched shipments, leading to data loss and skewed analysis. - To check for unmatched shipments after a left merge, you can filter for rows where a column from the right table is null, e.g., <code>shipments_with_category[shipments_with_category['prodCategory'].isna()]</code>. This tells you which <code>partID</code>s from the shipments data did not find a match.</p>
-<p><strong>Question 2: Key Column Matching</strong> - If there are duplicate <code>partID</code> values in the <code>product_line_df</code> (the right table), the merge will create a Cartesian product for those duplicates. This means a single row from <code>clean_shipments</code> will be duplicated for every matching <code>partID</code> in <code>product_line_df</code>. - For example, if one shipment row for <code>partID</code> ‘123’ is being merged and <code>product_line_df</code> has two rows for <code>partID</code> ‘123’, the result will be two rows in the final DataFrame. This can unintentionally inflate row counts and lead to incorrect summary statistics, so it’s crucial to ensure the key column in the right-side table is unique.</p>
+<p><strong>Question 2: Key Column Matching</strong> - If there are duplicate <code>partID</code> values in the <code>product_line_df</code> (the right table), the merge will create a Cartesian product for those duplicates. This means a single row from <code>clean_shipments</code> will be duplicated for every matching <code>partID</code> in <code>product_line_df</code>.</p>
+<p>For example, if one shipment row for <code>partID</code> ‘123’ is being merged and <code>product_line_df</code> has two rows for <code>partID</code> ‘123’, the result will be two rows in the final DataFrame. This can unintentionally inflate row counts and lead to incorrect summary statistics, so it’s crucial to ensure the key column in the right-side table is unique.</p>
 </blockquote>
 </section>
+</div>
+</div>
 </section>
 <section id="split-apply-combine-group-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="split-apply-combine-group-analysis">7. Split-Apply-Combine: Group Analysis</h3>
@@ -1040,15 +1043,15 @@ SpareParts      True   767  137  0.179    -1.003  21</code></pre>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: GroupBy Mechanics</strong> - What does <code>.groupby('prodCategory')</code> actually do? How does it “split” the data? - Why do we need to use <code>.agg()</code> after grouping? What happens if you don’t?</p>
 <p><strong>Question 2: Multi-Level Grouping</strong> - Explore grouping by <code>['shipID', 'prodCategory']</code>? What question does this answer versus grouping by <code>'prodCategory'</code> alone? (HINT: There may be many rows with identical shipID’s due to a particular order having multiple partID’s.)</p>
-</div>
-</div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-6" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-6">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
-<p><strong>Question 1: GroupBy Mechanics</strong> - <strong><code>.groupby('prodCategory')</code></strong> is the “Split” step. It doesn’t change the data visually but creates a <code>DataFrameGroupBy</code> object. Internally, it groups the rows into “buckets” based on each unique value in the <code>prodCategory</code> column. - We need to use <strong><code>.agg()</code></strong> (or another aggregation function like <code>.sum()</code> or <code>.mean()</code>) for the “Apply” and “Combine” steps. This tells pandas what calculation to perform on each group. Without an aggregation function, the <code>groupby</code> object is just an intermediate representation of the grouped data, not a final, summarized result.</p>
-<p><strong>Question 2: Multi-Level Grouping</strong> - Grouping by <strong><code>'prodCategory'</code></strong> alone summarizes performance across all shipments for each category (e.g., “What is the overall late rate for Electronics?”). - Grouping by <strong><code>['shipID', 'prodCategory']</code></strong> is more granular. It first groups by each individual shipment and <em>then</em> by the categories within that shipment. This is crucial for answering questions about the composition of a single order. For example, it allows us to count how many different product categories are present within a single <code>shipID</code>, which is exactly what’s needed to determine if an order is a multi-category order.</p>
+<p><strong>Question 1: GroupBy Mechanics</strong> - <strong><code>.groupby('prodCategory')</code></strong> is the “Split” step. It doesn’t change the data visually but creates a <code>DataFrameGroupBy</code> object. Internally, it groups the rows into “buckets” based on each unique value in the <code>prodCategory</code> column. We need to use <strong><code>.agg()</code></strong> (or another aggregation function like <code>.sum()</code> or <code>.mean()</code>) for the “Apply” and “Combine” steps. This tells pandas what calculation to perform on each group. Without an aggregation function, the <code>groupby</code> object is just an intermediate representation of the grouped data, not a final, summarized result.</p>
+<p><strong>Question 2: Multi-Level Grouping</strong> - Grouping by <strong><code>'prodCategory'</code></strong> alone summarizes performance across all shipments for each category (e.g., “What is the overall late rate for Electronics?”). Grouping by <strong><code>['shipID', 'prodCategory']</code></strong> is more granular. It first groups by each individual shipment and <em>then</em> by the categories within that shipment. This is crucial for answering questions about the composition of a single order. For example, it allows us to count how many different product categories are present within a single <code>shipID</code>, which is exactly what’s needed to determine if an order is a multi-category order.</p>
 </blockquote>
 </section>
+</div>
+</div>
 </section>
 </section>
 <section id="answering-a-business-question" class="level2">
@@ -1093,14 +1096,37 @@ Percentage with multiple categories: 23.3%</code></pre>
 </div>
 <div class="callout-body-container callout-body">
 <p><strong>Question 1: Business Question Analysis</strong> - What business question does this comprehensive analysis answer? - How does grouping by <code>['shipID', 'prodCategory']</code> differ from grouping by just <code>'prodCategory'</code>? - What insights can ZappTech’s management gain from knowing the percentage of multi-category shipments?</p>
-</div>
-</div>
 <section id="briefly-give-answers-to-the-discussion-questions-in-this-section-7" class="level4">
 <h4 class="anchored" data-anchor-id="briefly-give-answers-to-the-discussion-questions-in-this-section-7">Briefly Give Answers to the Discussion Questions In This Section</h4>
 <blockquote class="blockquote">
-<p><strong>Question 1: Business Question Analysis</strong> - <strong>Business Question:</strong> The analysis answers, “What percentage of our shipments contain products from more than one product category?” - <strong>Grouping Difference:</strong> Grouping by <code>['shipID', 'prodCategory']</code> is essential because it creates a summary for each category <em>within</em> a single shipment. This allows the subsequent <code>.transform('nunique')</code> step to count the number of distinct categories for each <code>shipID</code>. Grouping by <code>'prodCategory'</code> alone would lose the individual shipment context. - <strong>Management Insights:</strong> - <strong>Marketing:</strong> This metric helps evaluate the success of cross-selling strategies. A high percentage means customers are buying across categories; a low percentage suggests an opportunity to improve product discovery or bundling. - <strong>Logistics:</strong> Multi-category orders can be more complex to fulfill. Knowing their frequency helps optimize warehouse operations and manage fulfillment costs. - <strong>Customer Behavior:</strong> It provides insight into whether customers are “mission-driven” (buying one type of item) or “browsers” (exploring multiple categories), which can inform website design and user experience.</p>
+<p><strong>Question 1: Business Question Analysis</strong> - <strong>Business Question:</strong> The analysis answers, “What percentage of our shipments contain products from more than one product category? How does grouping by <code>['shipID', 'prodCategory']</code> differ from grouping by just <code>'prodCategory'</code>?”</p>
+<p><strong>Grouping Difference:</strong> Grouping by <code>['shipID', 'prodCategory']</code> is essential because it creates a summary for each category <em>within</em> a single shipment. This allows the subsequent <code>.transform('nunique')</code> step to count the number of distinct categories for each <code>shipID</code>. Grouping by <code>'prodCategory'</code> alone would lose the individual shipment context.</p>
 </blockquote>
+<p>What insights can ZappTech’s management gain from knowing the percentage of multi-category shipments?</p>
+<p><strong>Management Insights:</strong></p>
+<blockquote class="blockquote">
+<p><strong>Marketing:</strong> This metric helps evaluate the success of cross-selling strategies. A high percentage means customers are buying across categories; a low percentage suggests an opportunity to improve product discovery or bundling.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Logistics:</strong> Multi-category orders can be more complex to fulfill. Knowing their frequency helps optimize warehouse operations and manage fulfillment costs.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p><strong>Customer Behavior:</strong> It provides insight into whether customers are “mission-driven” (buying one type of item) or “browsers” (exploring multiple categories), which can inform website design and user experience.</p>
+</blockquote>
+<p>Below graph shows the ontime percentage of different categories.</p>
+<div id="cell-professional-visualization" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div id="professional-visualization" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/professional-visualization-output-1.png" width="758" height="758" class="figure-img"></p>
+<figcaption>On-Time Shipment Percentage by Product Category</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
+</div>
+</div>
 </section>
 <section id="student-analysis-section" class="level2">
 <h2 class="anchored" data-anchor-id="student-analysis-section">Student Analysis Section: Mastering Data Manipulation</h2>
@@ -1126,23 +1152,10 @@ Percentage with multiple categories: 23.3%</code></pre>
 <h3 class="anchored" data-anchor-id="professional-visualizations-for-100-grade">Professional Visualizations (For 100% Grade)</h3>
 <p><strong>Your Task:</strong> Create a professional visualization that supports your analysis and demonstrates your understanding of the data.</p>
 <p><strong>Create visualizations showing:</strong> - Service level (on-time percentage) by product category</p>
-<p><strong>Your visualizations should:</strong> - Use clear labels and professional formatting - Support the insights from your discussion questions - Be appropriate for a business audience - Do not <code>echo</code> the code that creates the visualizations</p>
-<div id="cell-professional-visualization" class="cell" data-execution_count="16">
-<div class="cell-output cell-output-display">
-<div id="professional-visualization" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="index_files/figure-html/professional-visualization-output-1.png" width="1142" height="758" class="figure-img"></p>
-<figcaption>On-Time Shipment Percentage by Product Category</figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="challenge-requirements" class="level2">
-<h2 class="anchored" data-anchor-id="challenge-requirements">Challenge Requirements 📋</h2>
+<p><strong>Your visualizations should:</strong> - Use clear labels and professional formatting - Support the insights from your discussion questions - Be appropriate for a business audience - Do not <code>echo</code> the code that creates the visualizations ## Challenge Requirements 📋</p>
 <p><strong>Your Primary Task:</strong> Answer all discussion questions for the seven mental models with thoughtful, well-reasoned responses that demonstrate your understanding of data manipulation concepts.</p>
 <p><strong>Key Requirements:</strong> - Complete discussion questions for each mental model - Demonstrate clear understanding of pandas concepts and data manipulation techniques - Write clear, business-focused analysis that explains your findings</p>
+</section>
 </section>
 <section id="getting-started-repository-setup" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started-repository-setup">Getting Started: Repository Setup 🚀</h2>
